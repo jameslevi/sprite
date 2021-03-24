@@ -1,6 +1,6 @@
 {
     "name": "jameslevi/spritesoda",
-    "description": "Is an open source image compiler tool.",
+    "description": "Is an image compiler written in PHP created for web developers.",
     "keywords": [
         "Sprites",
         "Icons"
@@ -13,10 +13,5 @@
             "homepage": "https://github.com/jameslevi",
             "role": "developer"
         }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Sprite\\": "src/"
-        }
-    }
+    ]
 }
