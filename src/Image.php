@@ -205,4 +205,15 @@ class Image
         return $this->height;
     }
 
+    /**
+     * Return name of group where image belong.
+     * 
+     * @return  string
+     */
+
+    public function getGroupName()
+    {
+        return $this->group;
+    }
+
 }
