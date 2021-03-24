@@ -4,16 +4,14 @@
  
 Is an image compiler written in PHP created for web developers. Sprite.io takes away the hard work of compiling icons using traditional ways.
 
-**FEATURE**
+**FEATURE**  
 1. Generate multiple image collections.
 2. Supports png, gif, jpg, bmp and webp icons.
 3. Automatically generate css class for each icon.
 
-**CONTRIBUTE**
-
+**CONTRIBUTE**  
 For bug reports, commits and suggestions, you can email James Levi Crisostomo via nerdlabenterprise@gmail.com.
 
 
-**LICENSE**
-
+**LICENSE**  
 This package is an open-sourced software licensed under [MIT](https://opensource.org/licenses/MIT) License.
