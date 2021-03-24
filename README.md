@@ -9,6 +9,11 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 2. Supports png, gif, jpg, bmp and webp icons.
 3. Automatically generate css class for each icon.
 
+**INSTALLATION**  
+1. You can install via composer using this command *"composer require-dev jameslevi/sprite"*.
+2. Create a folder for storing your icons.
+3. Create a folder from your public directory for storing your sprites.
+
 **CONTRIBUTE**  
 For bug reports, commits and suggestions, you can email James Levi Crisostomo via nerdlabenterprise@gmail.com.
 
