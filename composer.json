@@ -16,6 +16,9 @@
             "role": "developer"
         }
     ],
+    "require": {
+        "php": ">=5.2.0"
+    },
     "autoload": {
         "psr-4": {
             "Sprite\\": "src/"
