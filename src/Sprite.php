@@ -221,7 +221,6 @@ class Sprite
                 Console::success('    -h, --help               - Display sprite CLI command list.');
                 Console::success('    -v, --version            - Display current sprite version.');
                 Console::success('    -c, --clear              - Clear the CLI screen.');
-                Console::success('    -i, --info               - Show current sprite information.');
                 Console::success('    -x, --delete             - Delete the current sprite build.');
                 Console::success('    -g, --generate           - Generate new sprite build.');
             }
@@ -229,7 +228,41 @@ class Sprite
             // Generate new sprite build.
             else if($directive === '-g' || $directive === '--generate')
             {
-                $build = Builder::init($this);
+                Builder::init($this);
+                Console::success('Done generating sprites.');
+            }
+
+            // Clear CLI screen.
+            else if($directive === '-c' || $directive === '--clear')
+            {
+                print("\033[2J\033[;H");
+            }
+
+            // Delete the current sprite build.
+            else if($directive === '-x' || $directive === '--delete')
+            {
+                $path = $this->root . str_replace('/', '\\', $this->config('path'));
+                $files = array_diff(scandir($path), ['.', '..']);
+
+                if(file_exists($path))
+                {
+                    foreach($files as $file)
+                    {
+                        $location = $path . '\\' . $file;
+
+                        // Test if file exist and writable.
+                        if(file_exists($location) && is_writable($location))
+                        {
+                            unlink($location);
+                        }
+                    }
+
+                    Console::success('Sprite cache was successfully cleared.');
+                }
+                else
+                {
+                    Console::error('Sprite directory is missing.');
+                }
             }
 
             else

@@ -117,7 +117,7 @@ class Generator
         imagealphablending($canvas, false);
         imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 255, 255, 255, 127));
 
-        $this->css[] = ".--sprite-" . $this->name . "{background-image:url('sprite-" . $this->name . ".png') !important;}";
+        $this->css[] = ".sprite-" . $this->name . "{background-image:url('sprite-" . $this->name . ".png') !important;}";
         
         // Draw each tile inside the canvas.
         foreach($this->tiles as $tile)
@@ -128,7 +128,15 @@ class Generator
             imagecopy($canvas, $resource, $tile->getX(), $tile->getY(), 0, 0, $tile->getWidth(), $tile->getHeight());
             $copies[] = $resource;
             
-            $css = ".--sprite-" . $this->name . "-" . $image->getName() . "{display:block;border:0;";
+            $css = ".sprite-" . $this->name . "-" . $image->getName() . "{display:block;";
+            $css .= "background-repeat:no-repeat;background-color:transparent;";
+            $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
+            $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
+            $css .= "background-image:url('sprite-" . $this->name . ".png') !important;";
+            $css .= "}";
+
+            // Class with pseudo hover action.
+            $css .= ".--sprite-" . $this->name . "-" . $image->getName() . ":hover{display:block;";
             $css .= "background-repeat:no-repeat;background-color:transparent;";
             $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
             $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
@@ -147,8 +155,6 @@ class Generator
         {
             imagedestroy($copy);
         }
-
-        Console::success('The ' . $this->name . ' sprite was successfully generated.');
     }
 
     /**

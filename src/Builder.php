@@ -46,35 +46,18 @@ class Builder
             Console::error('No sprite groups has been declared.');
         }
 
-        $this->deleteRecentSprite();
-        $this->build();
-    }
+        $output = null;
 
-    /**
-     * Delete the sprite image and stylesheet previously generated.
-     * 
-     * @return  void
-     */
-
-    private function deleteRecentSprite()
-    {
-        $path = $this->context->root() . str_replace('/', '\\', $this->context->config('path'));
-        $files = array_diff(scandir($path), array('.', '..'));
-
-        if(file_exists($path) && !empty($files))
+        // Execute cache clear.
+        exec('php sprite -x', $output);
+        
+        // Display cache clear response message.
+        foreach($output as $item)
         {
-            Console::success('Deleting sprite image and stylesheet previously generated.');
-
-            foreach($files as $file)
-            {
-                $location = $path . '\\' . $file;
-
-                if(file_exists($location) && is_writable($location))
-                {
-                    unlink($location);
-                }
-            }
+            echo $item . "\n";
         }
+
+        $this->build();
     }
 
     /**
@@ -85,14 +68,12 @@ class Builder
 
     private function getGroups()
     {
-        Console::log('Gathering sprite group informations.');
+        Console::warn('Gathering sprite data.');
 
         foreach($this->context->config('sprites') as $sprite)
         {
             $this->groups[] = new Group($sprite, $this->context);
         }
-
-        Console::success(sizeof($this->groups) . ' sprite group found.');
     }
 
     /**
@@ -124,8 +105,6 @@ class Builder
             $canvas_width = 0;
             $canvas_height = 0;
             $n = 0;
-
-            Console::warn('Generating sprite for ' . $name . '.');
 
             foreach($images as $image)
             {
@@ -193,6 +172,8 @@ class Builder
             // Implode all stylesheets per group.
             $css[] = implode('', $generator->getStylesheet());
         }
+
+        Console::success('Sprite images was successfully generated.');
 
         // Generate sprite stylesheet file.
 
