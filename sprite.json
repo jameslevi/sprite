@@ -1,5 +1,5 @@
 {
-    "path": "/public/sprite",
+    "path": "/public",
     "settings": {
         "max-width": 720,
         "min-size": 16,
@@ -7,14 +7,5 @@
         "quality": 9,
         "sort": true
     },
-    "sprites": [
-        {
-            "name": "test1",
-            "path": "/icons/test1"
-        },
-        {
-            "name": "test2",
-            "path": "/icons/test2"
-        }
-    ]
+    "sprites": []
 }
