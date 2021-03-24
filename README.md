@@ -4,7 +4,7 @@
  
 Is an image compiler written in PHP created for web developers. Sprite takes away the hard work of compiling icons using traditional ways.
 
-**FEATURE**  
+**FEATURES**  
 1. Generate multiple image collections.
 2. Supports png, gif, jpg, bmp and webp icons.
 3. Automatically generate css class for each icon.
