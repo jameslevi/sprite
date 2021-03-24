@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * SPRITE SODA
+ * 
+ * @version 1.0.0
+ * @author  James Levi Crisostomo
+ */
+
+// Include the composer autoloader. 
+if(file_exists('vendor/autoload.php'))
+{
+    require 'vendor/autoload.php';
+}
+
+// Create new sprite object each time a command
+// is executed from the CLI.
+$sprite = \Sprite\Sprite::init($argv, __DIR__);
+
+// Execute sprite program.
+$sprite->exec();
+
+// Terminate sprite program.
+$sprite->terminate();

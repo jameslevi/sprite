@@ -1,0 +1,22 @@
+{
+    "name": "jameslevi/spritesoda",
+    "description": "Is an open source image compiler tool.",
+    "keywords": [
+        "Sprites",
+        "Icons"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Levi Crisostomo",
+            "email": "nerdlabenterprise@gmail.com",
+            "homepage": "https://github.com/jameslevi",
+            "role": "developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sprite\\": "src/"
+        }
+    }
+}

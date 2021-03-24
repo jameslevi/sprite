@@ -1,0 +1,20 @@
+{
+    "path": "/public/sprite",
+    "settings": {
+        "max-width": 720,
+        "min-size": 16,
+        "max-size": 48,
+        "quality": 9,
+        "sort": true
+    },
+    "sprites": [
+        {
+            "name": "test1",
+            "path": "/icons/test1"
+        },
+        {
+            "name": "test2",
+            "path": "/icons/test2"
+        }
+    ]
+}
