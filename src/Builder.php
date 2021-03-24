@@ -92,7 +92,6 @@ class Builder
         {
             $images = $group->getImages();
             $name = $group->getName();
-            $color = $group->getColor();
             $max_width = $this->context->settings('max-width');
             $min_size = $this->context->settings('min-size');
             $max_size = $this->context->settings('max-size');
@@ -166,7 +165,7 @@ class Builder
             $canvas_height = array_sum($largest_heights);
 
             // Generate the new sprite.
-            $generator = new Generator($this->context, $name, $group, $tiles, $canvas_width, $canvas_height, $config['path'], $color);
+            $generator = new Generator($this->context, $name, $group, $tiles, $canvas_width, $canvas_height, $config['path']);
             $generator->generate($quality);
 
             // Implode all stylesheets per group.

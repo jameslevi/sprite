@@ -61,14 +61,6 @@ class Generator
     private $path;
 
     /**
-     * Optional overlay color.
-     * 
-     * @var string
-     */
-
-    private $color;
-
-    /**
      * List of stylesheets per sprite.
      * 
      * @var array
@@ -85,10 +77,9 @@ class Generator
      * @param   int $width
      * @param   int $height
      * @param   string $path
-     * @param   string $color
      */
 
-    public function __construct(Sprite $sprite, string $name, Group $group, array $tiles, int $width, int $height, string $path, string $color = null)
+    public function __construct(Sprite $sprite, string $name, Group $group, array $tiles, int $width, int $height, string $path)
     {
         $this->context      = $sprite;
         $this->name         = $name;
@@ -97,7 +88,6 @@ class Generator
         $this->width        = $width;
         $this->height       = $height;
         $this->path         = $path;
-        $this->color        = $color;
     }
 
     /**
