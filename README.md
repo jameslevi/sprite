@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/packagist-v1.0.2-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)
  
-Is an image compiler written in PHP created for web developers. Sprite.io takes away the hard work of compiling icons using traditional ways.
+Is an image compiler written in PHP created for web developers. Sprite takes away the hard work of compiling icons using traditional ways.
 
 **FEATURE**  
 1. Generate multiple image collections.
