@@ -1,11 +1,13 @@
 {
     "name": "jameslevi/sprite",
+    "type": "library",
     "description": "Is an image compiler written in PHP created for web developers.",
     "keywords": [
-        "Sprites",
+        "Sprite",
         "Icons"
     ],
     "license": "MIT",
+    "homepage": "https://github.com/jameslevi/sprite",
     "authors": [
         {
             "name": "James Levi Crisostomo",
@@ -13,5 +15,10 @@
             "homepage": "https://github.com/jameslevi",
             "role": "developer"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sprite\\": "src/"
+        }
+    }
 }

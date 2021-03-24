@@ -206,20 +206,21 @@ class Sprite
             // Return current sprite api version.
             if($directive === '-v' || $directive === '--version')
             {
-                Console::warn('SPRITE SODA v' . $this->version);
+                Console::warn('SPRITE v' . $this->version);
             }
 
             // Show sprite CLI command list.
             else if($directive === '-h' || $directive === '--help')
             {
-                Console::warn('SPRITE SODA v' . $this->version);
+                Console::warn('SPRITE v' . $this->version);
+                Console::log('Is an image compiler written in PHP created for web developers.');
                 Console::lineBreak();
                 Console::warn('Usage:');
                 Console::log('    php sprite [command] [value]');
                 Console::lineBreak();
                 Console::warn('Options:');
                 Console::success('    -h, --help               - Display sprite CLI command list.');
-                Console::success('    -v, --version            - Display current sprite version.');
+                Console::success('    -v, --version            - Display current api version.');
                 Console::success('    -c, --clear              - Clear the CLI screen.');
                 Console::success('    -x, --delete             - Delete the current sprite build.');
                 Console::success('    -g, --generate           - Generate new sprite build.');
