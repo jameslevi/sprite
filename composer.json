@@ -23,13 +23,5 @@
         "psr-4": {
             "Sprite\\": "src/"
         }
-    },
-    "config": {
-        "process-timeout": 0
-    },
-    "scripts": {
-        "post-install-cmd":[
-            "php install.php"
-        ]
     }
 }
