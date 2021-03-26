@@ -88,6 +88,7 @@ class Builder
         $generator = [];
         $css = [];
 
+        // Generate each sprite group declared from sprite.json.
         foreach($this->groups as $group)
         {
             $images = $group->getImages();
@@ -105,12 +106,12 @@ class Builder
             $canvas_height = 0;
             $n = 0;
 
+            // Get the X and Y coordinates of each image.
             foreach($images as $image)
             {
                 $n++;
 
                 // Check if image has acceptable width and height.
-                // echo $image->getWidth() . "\n";
                 if($image->exist() && $image->getWidth() >= $min_size && $image->getHeight() >= $min_size && $image->getWidth() <= $max_size && $image->getHeight() <= $max_size)
                 {
                     $x = $width;
@@ -175,9 +176,7 @@ class Builder
         Console::success('Sprite images was successfully generated.');
 
         // Generate sprite stylesheet file.
-
-        $path = $this->context->root() . str_replace('/', '\\', $this->context->config('path')) . '\\sprite.css';
-        $file = fopen($path, 'w');
+        $file = fopen($this->context->root() . str_replace('/', '\\', $this->context->config('path')) . '\\sprite.css', 'w');
         fwrite($file, implode('', $css));
         fclose($file);
         
