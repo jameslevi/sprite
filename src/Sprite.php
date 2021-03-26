@@ -10,7 +10,7 @@ class Sprite
      * @var string
      */
 
-    private $version = '1.0.4';
+    private $version = '1.0.5';
 
     /**
      * Contains the current instance of this class.
