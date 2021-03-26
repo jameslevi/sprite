@@ -99,51 +99,61 @@ class Generator
 
     public function generate(int $quality = 9)
     {
-        $canvas = imagecreatetruecolor($this->width, $this->height);
-        $copies = [];
+        $path = $this->context->root() . str_replace('/', '\\', $this->path);
 
-        // Set canvas transparent background.
-        imagesavealpha($canvas, true);
-        imagealphablending($canvas, false);
-        imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 255, 255, 255, 127));
-
-        $this->css[] = ".sprite-" . $this->name . "{background-image:url('sprite-" . $this->name . ".png') !important;}";
-        
-        // Draw each tile inside the canvas.
-        foreach($this->tiles as $tile)
+        // Check if directory exist.
+        if(file_exists($path))
         {
-            $image = $tile->getImage();
-            $resource = $tile->getResource();
+            $canvas = imagecreatetruecolor($this->width, $this->height);
+            $copies = [];
 
-            imagecopy($canvas, $resource, $tile->getX(), $tile->getY(), 0, 0, $tile->getWidth(), $tile->getHeight());
-            $copies[] = $resource;
+            // Set canvas transparent background.
+            imagesavealpha($canvas, true);
+            imagealphablending($canvas, false);
+            imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 255, 255, 255, 127));
+
+            $this->css[] = ".sprite-" . $this->name . "{background-image:url('sprite-" . $this->name . ".png') !important;}";
             
-            // Class as an alternative for img tag.
-            $css = ".sprite-" . $this->name . "-" . $image->getName() . "{display:block;";
-            $css .= "background-repeat:no-repeat;background-color:transparent;";
-            $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
-            $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
-            $css .= "background-image:url('sprite-" . $this->name . ".png') !important;";
-            $css .= "}";
+            // Draw each tile inside the canvas.
+            foreach($this->tiles as $tile)
+            {
+                $image = $tile->getImage();
+                $resource = $tile->getResource();
 
-            // Class with pseudo hover action.
-            $css .= ".--sprite-" . $this->name . "-" . $image->getName() . ":hover{";
-            $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
-            $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
-            $css .= "background-image:url('sprite-" . $this->name . ".png') !important;";
-            $css .= "}";
+                imagecopy($canvas, $resource, $tile->getX(), $tile->getY(), 0, 0, $tile->getWidth(), $tile->getHeight());
+                $copies[] = $resource;
+                
+                // Class as an alternative for img tag.
+                $css = ".sprite-" . $this->name . "-" . $image->getName() . "{display:block;";
+                $css .= "background-repeat:no-repeat;background-color:transparent;";
+                $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
+                $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
+                $css .= "background-image:url('sprite-" . $this->name . ".png') !important;";
+                $css .= "}";
 
-            $this->css[] = $css;
+                // Class with pseudo hover action.
+                $css .= ".--sprite-" . $this->name . "-" . $image->getName() . ":hover{";
+                $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
+                $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
+                $css .= "background-image:url('sprite-" . $this->name . ".png') !important;";
+                $css .= "}";
+
+                $this->css[] = $css;
+            }
+
+            // Create sprite and free from memory.
+            imagepng($canvas, $path . '\sprite-' . $this->name . '.png', $quality);
+            imagedestroy($canvas);
+
+            // Destroy all image copies.
+            foreach($copies as $copy)
+            {
+                imagedestroy($copy);
+            }
         }
-
-        // Create sprite and free from memory.
-        imagepng($canvas, $this->context->root() . str_replace('/', '\\', $this->path) . '\sprite-' . $this->name . '.png', $quality);
-        imagedestroy($canvas);
-
-        // Destroy all image copies.
-        foreach($copies as $copy)
+        else
         {
-            imagedestroy($copy);
+            Console::error('Path to where generated sprite will be save is missing.');
         }
     }
 
