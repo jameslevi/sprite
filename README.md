@@ -10,7 +10,7 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 3. Automatically generate css class for each icon.
 
 **INSTALLATION**  
-1. You can install via composer using this command *"composer require-dev jameslevi/sprite"*.
+1. You can install via composer using this command *"composer require jameslevi/sprite"*.
 2. Copy the sprite.json and sprite file from jameslevi/sprite directory from the vendor folder.
 3. Create a folder in your resources directory for storing source icons.
 4. Create a folder from your public directory for storing your sprites.
