@@ -1,6 +1,6 @@
 # Sprite
 
-![](https://img.shields.io/badge/packagist-v1.0.4-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/badge/packagist-v1.0.5-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)
  
 Is an image compiler written in PHP created for web developers. Sprite takes away the hard work of compiling icons using traditional ways.
 
@@ -11,9 +11,8 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 
 **INSTALLATION**  
 1. You can install via composer using this command *"composer require-dev jameslevi/sprite"*.
-2. Create a resource folder for storing your icons.
+2. Sprites folder will be automatically created in your root directory.
 3. Create a folder from your public directory for storing your sprites.
-4. Copy the sprite and sprite.json file from vendor/jameslevi/sprite to your root directory.  
 
 **GETTING STARTED**  
 1. Set the path where sprite will be saved from your sprite.json file.
@@ -25,13 +24,13 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 "sprites": [
    {
       "name": "test",
-      "path": "/resources/icons"
+      "path": "/sprites/test"
    }
 ]
 ```  
 3. Paste the icons to be compiled to the path declared.
 4. Run the command *"php sprite --generate"* in your terminal.
-5. Add the sprite.css in the HEAD section of your HTML page.  
+5. Add the generated css file named "sprite.css" in the HEAD section of your HTML page.  
 ```html
 <link rel="stylesheet" href="sprite/sprite.css">
 ```  
@@ -43,14 +42,13 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 ```html
 <span class="sprite-test-image1 --sprite-test-image2"></span>
 ```  
-8. For more info, run *"php sprite --help"* in your terminal.
+8. For more info, run *"php sprite --help"* in your terminal.  
 
 **BEST PRACTICES**  
-Group images that are same sizes and types.
+Group images that are same sizes and types.  
 
 **CONTRIBUTE**  
-For bug reports, commits and suggestions, you can email James Levi Crisostomo via nerdlabenterprise@gmail.com.
-
+For bug reports, commits and suggestions, you can email James Levi Crisostomo via nerdlabenterprise@gmail.com.  
 
 **LICENSE**  
 This package is an open-sourced software licensed under [MIT](https://opensource.org/licenses/MIT) License.
