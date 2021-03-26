@@ -1,7 +1,7 @@
 {
     "name": "jameslevi/sprite",
     "type": "library",
-    "description": "Is an image compiler written in PHP created for web developers.",
+    "description": "Is a simple image to sprite compiler tool for web development.",
     "keywords": [
         "Sprite",
         "Icons"
