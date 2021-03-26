@@ -11,8 +11,9 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 
 **INSTALLATION**  
 1. You can install via composer using this command *"composer require-dev jameslevi/sprite"*.
-2. Sprites folder will be automatically created in your root directory.
-3. Create a folder from your public directory for storing your sprites.
+2. Copy the sprite.json and sprite file from jameslevi/sprite directory from the vendor folder.
+3. Create a folder in your resources directory for storing source icons.
+4. Create a folder from your public directory for storing your sprites.
 
 **GETTING STARTED**  
 1. Set the path where sprite will be saved from your sprite.json file.
@@ -24,7 +25,7 @@ Is an image compiler written in PHP created for web developers. Sprite takes awa
 "sprites": [
    {
       "name": "test",
-      "path": "/sprites/test"
+      "path": "/resources/test"
    }
 ]
 ```  
