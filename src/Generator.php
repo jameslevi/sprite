@@ -118,6 +118,7 @@ class Generator
             imagecopy($canvas, $resource, $tile->getX(), $tile->getY(), 0, 0, $tile->getWidth(), $tile->getHeight());
             $copies[] = $resource;
             
+            // Class as an alternative for img tag.
             $css = ".sprite-" . $this->name . "-" . $image->getName() . "{display:block;";
             $css .= "background-repeat:no-repeat;background-color:transparent;";
             $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
@@ -126,8 +127,7 @@ class Generator
             $css .= "}";
 
             // Class with pseudo hover action.
-            $css .= ".--sprite-" . $this->name . "-" . $image->getName() . ":hover{display:block;";
-            $css .= "background-repeat:no-repeat;background-color:transparent;";
+            $css .= ".--sprite-" . $this->name . "-" . $image->getName() . ":hover{";
             $css .= "width:" . $tile->getWidth() . "px !important;height:" . $tile->getHeight() . "px !important;";
             $css .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
             $css .= "background-image:url('sprite-" . $this->name . ".png') !important;";
