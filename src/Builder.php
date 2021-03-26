@@ -166,7 +166,7 @@ class Builder
             $canvas_height = array_sum($largest_heights);
 
             // Generate the new sprite.
-            $generator = new Generator($this->context, $name, $group, $tiles, $canvas_width, $canvas_height, $config['path']);
+            $generator = new Generator($this->context, $name, $tiles, $canvas_width, $canvas_height, $config['path']);
             $generator->generate($quality);
 
             // Implode all stylesheets per group.

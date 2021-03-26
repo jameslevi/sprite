@@ -21,14 +21,6 @@ class Generator
     private $name;
 
     /**
-     * Store sprite group object.
-     * 
-     * @var \Sprite\Group
-     */
-
-    private $group;
-
-    /**
      * List of tiles in each sprite group.
      * 
      * @var array
@@ -71,19 +63,18 @@ class Generator
     /**
      * Create new instance of this class.
      * 
+     * @param   \Sprite\Sprite $sprite
      * @param   string $name
-     * @param   \Sprite\Group $group
      * @param   array $tiles
      * @param   int $width
      * @param   int $height
      * @param   string $path
      */
 
-    public function __construct(Sprite $sprite, string $name, Group $group, array $tiles, int $width, int $height, string $path)
+    public function __construct(Sprite $sprite, string $name, array $tiles, int $width, int $height, string $path)
     {
         $this->context      = $sprite;
         $this->name         = $name;
-        $this->group        = $group;
         $this->tiles        = $tiles;
         $this->width        = $width;
         $this->height       = $height;
