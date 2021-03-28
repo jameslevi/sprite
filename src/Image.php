@@ -93,7 +93,7 @@ class Image
         $split = explode('/', $filename);
         $split = explode('.', $split[sizeof($split) - 1]);
 
-        $this->name = $split[0];
+        $this->name = strtolower($split[0]);
         $this->extension = strtolower($split[1]);
 
         // Get the width and height of the image.
