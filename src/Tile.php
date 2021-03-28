@@ -28,6 +28,15 @@ class Tile
 
     private $y;
 
+    /**
+     * Create new tile instance.
+     * 
+     * @param   \Sprite\Image $image
+     * @param   int $x
+     * @param   int $y
+     * @return  void
+     */
+
     public function __construct(Image $image, int $x, int $y)
     {
         $this->image = $image;
