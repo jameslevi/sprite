@@ -68,8 +68,6 @@ class Builder
 
     private function getGroups()
     {
-        Console::warn('Gathering sprite data.');
-
         foreach($this->context->config('sprites') as $sprite)
         {
             $this->groups[] = new Group($sprite, $this->context);
