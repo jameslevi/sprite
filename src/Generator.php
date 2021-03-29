@@ -69,6 +69,7 @@ class Generator
      * @param   int $width
      * @param   int $height
      * @param   string $path
+     * @return  void
      */
 
     public function __construct(Sprite $sprite, string $name, array $tiles, int $width, int $height, string $path)
@@ -99,10 +100,11 @@ class Generator
             $copies = [];
 
             // Set canvas transparent background.
+            imagefill($canvas, 0, 0, IMG_COLOR_TRANSPARENT);
             imagesavealpha($canvas, true);
-            imagealphablending($canvas, false);
-            imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 255, 255, 255, 127));
+            imagealphablending($canvas, true);
 
+            // Class to access the sprite image.
             $this->css[] = ".sprite-" . $this->name . "{background-image:url('sprite-" . $this->name . ".png') !important;}";
             
             // Draw each tile inside the canvas.
@@ -111,8 +113,8 @@ class Generator
                 $image = $tile->getImage();
                 $resource = $tile->getResource();
 
+                // Copy the image in it's proper location.
                 imagecopy($canvas, $resource, $tile->getX(), $tile->getY(), 0, 0, $tile->getWidth(), $tile->getHeight());
-                $copies[] = $resource;
                 
                 // Class as an alternative for img tag.
                 $css = ".sprite-" . $this->name . "-" . $image->getName() . "{display:block;";
@@ -130,6 +132,7 @@ class Generator
                 $css .= "}";
 
                 $this->css[] = $css;
+                $copies[] = $resource;
             }
 
             // Create sprite and free from memory.
