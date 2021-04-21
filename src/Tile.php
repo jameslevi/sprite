@@ -39,9 +39,9 @@ class Tile
 
     public function __construct(Image $image, int $x, int $y)
     {
-        $this->image = $image;
-        $this->x = $x;
-        $this->y = $y;
+        $this->image    = $image;
+        $this->x        = $x;
+        $this->y        = $y;
     }
 
     /**
@@ -53,7 +53,7 @@ class Tile
     public function getResource()
     {
         $extension = $this->image->getExtension();
-        $location = $this->image->getLocation();
+        $location = $this->image->getFileLocation();
 
         if($extension === 'png')
         {

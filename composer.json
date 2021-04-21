@@ -17,7 +17,8 @@
         }
     ],
     "require": {
-        "php": ">=5.2.0"
+        "php": ">=5.2.0",
+        "jameslevi/atmos": "v1.0.3"
     },
     "autoload": {
         "psr-4": {

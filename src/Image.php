@@ -5,61 +5,15 @@ namespace Sprite;
 class Image
 {
     /**
-     * Contains all image types supported.
-     * 
-     * @var array
-     */
-
-    private $support = [
-        'png',
-        'jpg',
-        'gif',
-        'bmp',
-        'webp',
-    ];
-
-    /**
-     * Store image path.
+     * Location of the image file.
      * 
      * @var string
      */
 
-    private $path;
+    private $file;
 
     /**
-     * Store image group name.
-     * 
-     * @var string
-     */
-
-    private $group;
-
-    /**
-     * Store image filename.
-     * 
-     * @var string
-     */
-
-    private $filename;
-
-    /**
-     * Store image name.
-     * 
-     * @var string
-     */
-
-    private $name;
-
-    /**
-     * Store image file extension.
-     * 
-     * @var string
-     */
-
-    private $extension;
-
-    /**
-     * Return image width.
+     * Store image width in px.
      * 
      * @var int
      */
@@ -67,7 +21,7 @@ class Image
     private $width;
 
     /**
-     * Return image height.
+     * Store image height in px.
      * 
      * @var int
      */
@@ -75,116 +29,70 @@ class Image
     private $height;
 
     /**
-     * Create new image instance.
+     * Construct a new image instance.
      * 
-     * @param   string $path
-     * @param   string $group
-     * @param   string $filename
+     * @param   string $file
      * @return  void
      */
-
-    public function __construct(string $path, string $group, string $filename)
+    
+    public function __construct(string $file)
     {
-        $this->path = $path;
-        $this->group = $group;
-        $this->filename = $filename;
+        $this->file = $file;
 
-        // Slice filename to get file name and extension.
-        $split = explode('/', $filename);
-        $split = explode('.', $split[sizeof($split) - 1]);
-
-        $this->name = strtolower($split[0]);
-        $this->extension = strtolower($split[1]);
-
-        // Get the width and height of the image.
-        if($this->exist())
+        if($this->exists())
         {
-            list($width, $height) = getimagesize($this->getLocation());
-
-            $this->width = $width;
-            $this->height = $height;
+            list($width, $height)   = getimagesize($this->file);
+            $this->width            = $width;
+            $this->height           = $height;
         }
     }
 
     /**
-     * Return image location.
+     * Return the image path.
      * 
      * @return  string
      */
 
-    public function getLocation()
+    public function getFileLocation()
     {
-        return str_replace('/', '\\', $this->path) . '\\' .  $this->filename;
+        return $this->file;
     }
 
     /**
-     * Return image path.
+     * Return true if image exists.
      * 
-     * @return  string
+     * @return  bool
      */
 
-    public function getPath()
+    public function exists()
     {
-        return $this->path;
+        return file_exists($this->file);
     }
 
     /**
-     * Return image name.
+     * Return the file name of the image.
      * 
      * @return  string
      */
 
     public function getName()
     {
-        return $this->name;
+        return pathinfo($this->file, PATHINFO_FILENAME);
     }
 
     /**
-     * Return image file extension.
+     * Return the file extension of this image.
      * 
      * @return  string
      */
 
     public function getExtension()
     {
-        return $this->extension;
+        return pathinfo($this->file, PATHINFO_EXTENSION);
     }
 
     /**
-     * Return true if image file is supported.
-     * 
-     * @return  bool
-     */
-
-    public function supported()
-    {
-        return in_array($this->extension, $this->support);
-    }
-
-    /**
-     * Return the filename of the image.
-     * 
-     * @return  string
-     */
-
-    public function getFilename()
-    {
-        return $this->filename;
-    }
-
-    /**
-     * Check if image exist.
-     * 
-     * @return  bool
-     */
-
-    public function exist()
-    {
-        return file_exists($this->getLocation()) && is_readable($this->getLocation());
-    }
-
-    /**
-     * Return image width.
+     * Return the width of an image in px.
      * 
      * @return  int
      */
@@ -195,7 +103,7 @@ class Image
     }
 
     /**
-     * Return image height.
+     * Return the height of an image in px.
      * 
      * @return  int
      */
@@ -203,17 +111,6 @@ class Image
     public function getHeight()
     {
         return $this->height;
-    }
-
-    /**
-     * Return name of group where image belong.
-     * 
-     * @return  string
-     */
-
-    public function getGroupName()
-    {
-        return $this->group;
     }
 
 }

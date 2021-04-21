@@ -2,323 +2,573 @@
 
 namespace Sprite;
 
+use Atmos\Console;
+
 class Sprite
 {
     /**
-     * Current sprite api version.
+     * Current version of sprite.
      * 
      * @var string
      */
 
-    private $version = '1.0.8';
+    private static $version = 'v1.0.9';
 
     /**
-     * Contains the current instance of this class.
-     * 
-     * @var \Sprite\Sprite
-     */
-
-    private static $instance;
-
-    /**
-     * Contains an array of inputs from the CLI.
+     * List of supported image file extensions.
      * 
      * @var array
      */
 
-    private $argv;
+    private $supported = array(
+        'png',
+        'jpg',
+        'gif',
+        'bmp',
+        'webp',
+    );
 
     /**
-     * Contains the root directory of the application.
+     * Name of sprite group to generate.
+     * 
+     * @var string
+     */
+
+    private $name;
+
+    /**
+     * Location where to find the icons to compile.
+     * 
+     * @var string
+     */
+
+    private $location;
+
+    /**
+     * Default maximum width of generated image.
+     * 
+     * @var int
+     */
+
+    private $max_width = 720;
+
+    /**
+     * Default minimum dimension of each icons.
+     * 
+     * @var int
+     */
+
+    private $min_size = 16;
+
+    /**
+     * Default maximum dimension of image icons.
+     * 
+     * @var int
+     */
+
+    private $max_size = 16;
+
+    /**
+     * Rendering quality of sprite image.
+     * 
+     * @var int
+     */
+
+    private $quality = 9;
+
+    /**
+     * Path where to save generated sprite image.
+     * 
+     * @var string
+     */
+
+    private $image_path;
+
+    /**
+     * The actual URL of the generated sprite image.
+     * 
+     * @var string
+     */
+
+    private $base_url;
+
+    /**
+     * Path where to save generated stylesheet file.
+     * 
+     * @var string
+     */
+
+    private $css_path;
+
+    /**
+     * Store list of all images to compile.
      * 
      * @var array
      */
 
-    private $root;
+    private $images = array();
 
     /**
-     * Check if program is still not executed.
-     * 
-     * @var bool
-     */
-
-    private $executed = false;
-
-    /**
-     * Check if program has ended.
-     * 
-     * @var bool
-     */
-
-    private $ended = false;
-
-    /**
-     * Store sprite configurations.
+     * Store list of image file extensions in this group.
      * 
      * @var array
      */
 
-    private $config;
+    private $extensions = array();
 
     /**
-     * Create new instance of this class.
+     * Construct a new instance of sprite.
      * 
-     * @param   array $argv
-     * @param   string $root
+     * @param   string $name
+     * @param   string $location
      * @return  void
      */
 
-    private function __construct(array $argv, string $root)
+    public function __construct(string $name, string $location)
     {
-        array_shift($argv);
-
-        $this->argv = $argv;
-        $this->root = $root;
-
-        // Test if PHP image GD library was disabled then terminate.
-        if(!$this->isGDEnabled())
-        {
-            Console::error('GD image library was disabled.');
-            $this->executed = true;
-            $this->terminate();
-        }
-
-        // Load configurations before executing.
-        $this->config = $this->loadConfig();
-
-        // Check if config was successfully loaded.
-        if(is_null($this->config))
-        {
-            Console::error('The sprite.json file was missing from the root directory.');
-        }
+        $this->name         = strtolower($name);
+        $this->location     = str_replace('/', '\\', $location);
+        
+        $this->readImages();
     }
 
     /**
-     * Return current api version.
+     * Get the list of all image files.
      * 
-     * @return  string
+     * @return  void
      */
 
-    public function version()
+    private function readImages()
     {
-        return $this->version;
+        if(file_exists($this->location) && is_readable($this->location))
+        {
+            $images = array();
+
+            foreach(array_diff(scandir($this->location), array('.', '..')) as $file)
+            {
+                if($this->isValidImageType($file))
+                {
+                    $type = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
+                    if(!in_array($type, $this->extensions))
+                    {
+                        $this->extensions[] = $type;
+                    }
+
+                    $images[] = new Image($this->location . '/' . $file);
+                }
+            }
+
+            usort($images, function($a, $b) {
+                return $a->getWidth() > $b->getWidth();
+            });
+
+            $this->images = $images;
+        }
     }
 
     /**
-     * Check if image GD library was enabled.
+     * Return true if image file is supported.
+     * 
+     * @param   string $file
+     * @return  bool
+     */
+
+    private function isValidImageType(string $file)
+    {
+        return in_array(pathinfo($file, PATHINFO_EXTENSION), $this->supported);
+    }
+
+    /**
+     * Return true if GD library is enabled.
      * 
      * @return  bool
      */
 
-    public function isGDEnabled()
+    private function isGDEnabled()
     {
         return extension_loaded('gd');
     }
 
     /**
-     * Return the root directory of the application.
+     * Return sprite name.
      * 
      * @return  string
      */
 
-    public function root()
+    public function getName()
     {
-        return $this->root;
+        return $this->name;
     }
 
     /**
-     * Load configurations from sprite.json file.
+     * Return icon set location.
      * 
-     * @return  array
+     * @return  string
      */
-    
-    private function loadConfig()
+
+    public function getLocation()
     {
-        $config = $this->root . '\sprite.json';
-        
-        if(file_exists($config))
-        {
-            return json_decode(file_get_contents($config), true);
-        }
+        return $this->location;
     }
 
     /**
-     * Return config properties by key.
+     * Return the maximum width of rendered sprite image.
      * 
-     * @param   string $key
-     * @return  mixed
+     * @return  int
      */
 
-    public function config(string $key = null)
+    public function getMaxWidth()
     {
-        if(!is_null($key) && array_key_exists($key, $this->config))
-        {
-            return $this->config[$key];
-        }
-        else
-        {
-            return $this->config;
-        }
+        return $this->max_width;
     }
 
     /**
-     * Return sprite settings.
+     * Set maximum width of rendered sprite image.
      * 
-     * @param   string $key
-     * @return  mixed
+     * @param   int $max_width
+     * @return  $this
      */
 
-    public function settings(string $key)
+    public function setMaxWidth(int $max_width)
     {
-        return $this->config('settings')[$key];
+        $this->max_width = $max_width;
+
+        return $this;
     }
 
     /**
-     * Execute the input CLI commands.
+     * Return the minimum dimension of each icons.
      * 
-     * @return  \Sprite\Sprite
+     * @return  int
      */
 
-    public function exec()
+    public function getMinSize()
     {
-        if(!$this->executed)
+        return $this->min_size;
+    }
+
+    /**
+     * Set the minimum dimension of each icons.
+     * 
+     * @param   int $min_size
+     * @return  $this
+     */
+
+    public function setMinSize(int $min_size)
+    {
+        $this->min_size = $min_size;
+
+        return $this;
+    }
+
+    /**
+     * Return the maximum dimension of each icons.
+     * 
+     * @return  int
+     */
+
+    public function getMaxSize()
+    {
+        return $this->max_size;
+    }
+
+    /**
+     * Set the maximum dimension of each icons.
+     * 
+     * @param   int $max_size
+     * @return  $this
+     */
+
+    public function setMaxSize(int $max_size)
+    {
+        $this->max_size = $max_size;
+
+        return $this;
+    }
+
+    /**
+     * Return the rendering quality value of an image.
+     * 
+     * @return  int
+     */
+
+    public function getQualityIndex()
+    {
+        return $this->quality;
+    }
+
+    /**
+     * Set the rendering quality of sprite images.
+     * 
+     * @param   int $quality
+     * @return  $this
+     */
+
+    public function setQualityIndex(int $quality)
+    {
+        if($quality <= 9 && $quality >= 0)
         {
-            $this->executed = true;
-            $this->runtime();
+            $this->quality = $quality;
         }
 
         return $this;
     }
 
     /**
-     * Everything will happen here.
+     * Return the path where to save the generated images.
+     * 
+     * @return  string
+     */
+
+    public function getCompiledImagePath()
+    {
+        return $this->image_path;
+    }
+
+    /**
+     * Set the location where to save the generated images.
+     * 
+     * @param   string $path
+     * @return  $this
+     */
+
+    public function setCompiledImagePath(string $path)
+    {
+        $this->image_path = str_replace('/', '\\', $path);
+
+        return $this;
+    }
+
+    /**
+     * Return the path where to save the generated css.
+     * 
+     * @return  string
+     */
+
+    public function getGeneratedCSSPath()
+    {
+        return $this->css_path;
+    }
+
+    /**
+     * Set the location where to save the generated css.
+     * 
+     * @param   string $path
+     * @return  $this
+     */
+
+    public function setGeneratedCSSPath(string $path)
+    {
+        $this->css_path = str_replace('/', '\\', $path);
+
+        return $this;
+    }
+
+    /**
+     * Set the base URL of the generated image.
+     * 
+     * @param   string $url
+     * @return  $this
+     */
+
+    public function setSpriteBaseURL(string $url)
+    {
+        $this->base_url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Return list of images from path.
+     * 
+     * @return  array
+     */
+
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Generate sprite image and stylesheet.
      * 
      * @return  void
      */
 
-    private function runtime()
+    public function generate()
     {
-        if(!empty($this->argv))
+        if(!$this->isGDEnabled())
         {
-            $directive = strtolower($this->argv[0]);
-            $value = $this->argv[1] ?? null;
+            return Console::error("GD library is currently not supported in your machine.");
+        }
 
-            // Return current sprite api version.
-            if($directive === '-v' || $directive === '--version')
+        if(!file_exists($this->image_path))
+        {
+            return Console::error("Location is missing or invalid.");
+        }
+
+        Console::log("Generating sprite has started...");
+        Console::lineBreak();
+
+        Console::warn("Sprite Name      :\e[39m " . $this->name);
+        Console::warn("Location         :\e[39m " . $this->location);
+        Console::warn("Icons Found      :\e[39m " . sizeof($this->images));
+        Console::warn("Image Type       :\e[39m " . implode(", ", $this->extensions));
+        Console::warn("Image Path       :\e[39m " . $this->image_path . "\sprite-" . $this->name . ".png");
+        Console::warn("CSS Path         :\e[39m " . $this->css_path . "\sprite-" . $this->name . ".css");
+        
+        if(!empty($this->images))
+        {
+            $tiles              = array();
+            $width              = 0;
+            $height             = 0;
+            $largest_height     = 0;
+            $largest_heights    = array();
+            $canvas_width       = 0;
+            $canvas_height      = 0;
+            $n                  = 0;
+
+            foreach($this->images as $image)
             {
-                Console::warn('SPRITE v' . $this->version);
-            }
+                $n++;
 
-            // Show sprite CLI command list.
-            else if($directive === '-h' || $directive === '--help')
-            {
-                Console::warn('SPRITE v' . $this->version);
-                Console::log('Is an image compiler written in PHP created for web developers.');
-                Console::lineBreak();
-                Console::warn('Usage:');
-                Console::log('    php sprite [command] [value]');
-                Console::lineBreak();
-                Console::warn('Options:');
-                Console::success('    -h, --help               - Display sprite CLI command list.');
-                Console::success('    -v, --version            - Display current api version.');
-                Console::success('    -c, --clear              - Clear the CLI screen.');
-                Console::success('    -x, --delete             - Delete the current sprite build.');
-                Console::success('    -g, --generate           - Generate new sprite build.');
-            }
-
-            // Generate new sprite build.
-            else if($directive === '-g' || $directive === '--generate')
-            {
-                Builder::init($this);
-                Console::success('Done generating sprites.');
-            }
-
-            // Clear CLI screen.
-            else if($directive === '-c' || $directive === '--clear')
-            {
-                print("\033[2J\033[;H");
-            }
-
-            // Delete the current sprite build.
-            else if($directive === '-x' || $directive === '--delete')
-            {
-                $path = $this->root . str_replace('/', '\\', $this->config('path'));
-                $files = array_diff(scandir($path), ['.', '..']);
-
-                if(file_exists($path))
+                if($image->exists() && 
+                    $image->getWidth() >= $this->getMinSize() && 
+                    $image->getHeight() >= $this->getMinSize() &&
+                    $image->getWidth() <= $this->getMaxSize() &&
+                    $image->getHeight() <= $this->getMaxSize()
+                    )
                 {
-                    foreach($files as $file)
-                    {
-                        $location = $path . '\\' . $file;
+                    $x = $width;
+                    $y = $height;
+                    $z = false;
 
-                        // Test if file exist and writable.
-                        if(file_exists($location) && is_writable($location))
-                        {
-                            unlink($location);
-                        }
+                    if($image->getHeight() > $largest_height)
+                    {
+                        $largest_height = $image->getHeight();
                     }
 
-                    Console::success('Sprite cache was successfully cleared.');
-                }
-                else
-                {
-                    Console::error('Sprite directory is missing.');
+                    $tiles[] = new Tile($image, $x, $y);
+
+                    if(($width + $image->getWidth()) > $width && ($width + $image->getWidth()) <= $this->max_width)
+                    {
+                        $width += $image->getWidth();
+                    }
+
+                    if($width > $canvas_width)
+                    {
+                        $canvas_width = $width;
+                    }
+
+                    if($n == sizeof($this->images) && !$z)
+                    {
+                        $z = true;
+                        $largest_heights[] = $largest_height;
+                    }
+
+                    if(($width + $image->getWidth()) > $this->max_width)
+                    {
+                        $width = 0;
+                        $height += $largest_height;
+
+                        if(!$z)
+                        {
+                            $largest_heights[] = $largest_height;
+                        }
+
+                        $largest_height = 0;
+                    }
                 }
             }
+            
+            if(empty($tiles))
+            {
+                return Console::error("No image assets to compile.");
+            }
 
+            $canvas_height  = array_sum($largest_heights);
+            $canvas         = imagecreatetruecolor($canvas_width, $canvas_height);
+            $file_img       = $this->image_path . '\sprite-' . $this->name . '.png';
+            $file_css       = $this->css_path . '\sprite-' . $this->name . '.css';
+            $copies         = array();
+            $css            = array();
+
+            Console::warn("Canvas Width     :\e[39m " . $canvas_width . 'px');
+            Console::warn("Canvas Height    :\e[39m " . $canvas_height . 'px');
+            Console::lineBreak();
+
+            if(file_exists($file_img))
+            {
+                Console::success("Existing sprite image has been deleted.");
+                unlink($file_img);
+            }
+
+            if(file_exists($file_css))
+            {
+                Console::success("Existing sprite stylesheet has been deleted.");
+                unlink($file_css);
+            }
+
+            imagefill($canvas, 0, 0, IMG_COLOR_TRANSPARENT);
+            imagesavealpha($canvas, true);
+            imagealphablending($canvas, true);
+
+            if(!is_null($this->base_url))
+            {
+                $background = $this->base_url . "\sprite-" . $this->name . '.png';
+            }
             else
             {
-                Console::error('Unknown sprite command.');
+                $background = $this->name . '.png';
             }
-        }
-        else
-        {
-            Console::error('Unknown sprite command.');
+
+            $css[] = ".sprite-" . $this->name . "{background-image:url('$background') !important;background-color:transparent}";
+
+            foreach($tiles as $tile)
+            {
+                $image = $tile->getImage();
+                $resource = $tile->getResource();
+
+                imagecopy($canvas, $resource, $tile->getX(), $tile->getY(), 0, 0, $tile->getWidth(), $tile->getHeight());
+
+                $copies[]   = $resource;
+                $styles     = ".sprite-" . $this->name . "-" . $image->getName() . "{";
+                $styles    .= "background-repeat:no-repeat;";
+                $styles    .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
+                $styles    .= "width:" . $tile->getWidth() . "px;";
+                $styles    .= "height:" . $tile->getHeight() . "px";
+
+                $css[] = $styles . "}";
+            }
+
+            Console::success("Sprite image has been generated.");
+            imagepng($canvas, $file_img, $this->quality);
+            imagedestroy($canvas);
+
+            foreach($copies as $copy)
+            {
+                imagedestroy($copy);
+            }
+
+            $file = fopen($file_css, 'w');
+            fwrite($file, implode(PHP_EOL, $css));
+            fclose($file);
+
+            Console::success("Sprite stylesheet has been generated.");
+            Console::success("Sprite has been successfully generated.");
         }
     }
 
     /**
-     * Terminate sprite program.
+     * Return the current version of sprite.
      * 
-     * @return  void
+     * @return  string
      */
 
-    public function terminate()
+    public static function version()
     {
-        if(!$this->ended && $this->executed)
-        {
-            $this->ended = true;
-            exit(0);
-        }
-    }
-
-    /**
-     * Instantiate new sprite instance.
-     * 
-     * @param   array $argv
-     * @param   string $root
-     * @return  \Sprite\Sprite
-     */
-
-    public static function init(array $argv, string $root)
-    {
-        if(is_null(static::$instance))
-        {
-            static::$instance = new self($argv, $root);
-        }
-
-        return static::$instance;
-    }
-
-    /**
-     * Return the sprite object.
-     * 
-     * @return  \Sprite\Sprite
-     */
-
-    public static function context()
-    {
-        return static::$instance;
+        return self::$version;
     }
 
 }
