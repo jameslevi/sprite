@@ -66,7 +66,7 @@ class Sprite
      * @var int
      */
 
-    private $max_size = 16;
+    private $max_size = 32;
 
     /**
      * Rendering quality of sprite image.
@@ -372,11 +372,34 @@ class Sprite
      * @return  $this
      */
 
-    public function setSpriteBaseURL(string $url)
+    public function setImageBaseURL(string $url)
     {
         $this->base_url = $url;
 
         return $this;
+    }
+
+    /**
+     * Return the generated image base URL.
+     * 
+     * @return  string
+     */
+
+    public function getImageBaseURL()
+    {
+        return $this->base_url;
+    }
+
+    /**
+     * Set common path for generated css and image.
+     * 
+     * @param   string $path
+     * @return  $this
+     */
+
+    public function setCommonPath(string $path)
+    {
+        return $this->setCompiledImagePath($path)->setGeneratedCSSPath($path);
     }
 
     /**
