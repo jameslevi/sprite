@@ -543,7 +543,7 @@ class Sprite
             }
             else
             {
-                $background = $this->name . '.png';
+                $background = "sprite-" . $this->name . '.png';
             }
 
             $css[] = ".sprite-" . $this->name . "{background-image:url('$background') !important;background-color:transparent}";
