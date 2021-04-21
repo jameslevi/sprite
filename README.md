@@ -5,39 +5,91 @@
 Is a simple image to sprite compiler tool for web development.
 
 ## Features ##
-1. Generate multiple image collections.
-2. Supports png, gif, jpg, bmp and webp icons.
-3. Automatically generate css class for each icon.
+1. Supports png, gif, jpg, bmp and webp icons.
+2. Automatically generate css class for each icon.
 
 ## Installation ##
-1. You can install via composer using this command *"composer require jameslevi/sprite"*.
-2. Copy the sprite.json and sprite file from jameslevi/sprite directory from the vendor folder.  
+1. You can install via composer.
+```
+composer require jameslevi/sprite --dev
+```
+2. Copy the atmos file from vendor/jameslevi/atmos folder to your root directory.  
+3. Create a new folder in your root directory named commands.
 
 ## Getting Started ##
-1. Set the directory from sprite.json where the sprite will be created.
-```json
-"path": "/public/sprite"
-```  
-2. Add new sprite group in your sprite.json file under the sprites property.
-```json
-"sprites": [
-   {
-      "name": "test",
-      "path": "/resources/test"
-   }
-]
-```  
-3. Put all the icons in to the specified path.
-4. Run the command *"php sprite --generate"* in your terminal.
-5. Add the generated css file named "sprite.css" in the HEAD section of your HTML page.  
+1. Create a new atmos command file named "sprite".
+```
+php atmos --make sprite
+```
+2. Open the Sprite.php file from commands folder and add a new protected method named "generate".
+```php
+/**
+ * Method to generate sprite image and stylesheet.
+ *
+ * @param  array $arguments
+ * @return void
+ */
+
+protected function generate(array $arguments)
+{
+     
+}
+```
+3. Try the following code inside the generate method.
+```php
+/**
+ * Create a new sprite object.
+ * 
+ * @param string $name - Sprite name.
+ * @param string $location - Folder where to get the icons.
+ */
+ 
+$sprite = new Sprite("test", __DIR__ . "/../resources/icons");
+
+// Save the generated files to public folder.
+$sprite->setCommonPath(__DIR__ . "/../public");
+
+// Start generating sprite image and stylesheet.
+$sprite->generate();
+```
+4. Run the following command in your terminal to generate sprite.
+```
+php atmos sprite:generate
+```
+5. An image and css file will be generated in your public folder. Add the css in the head section of your webpage to access all sprites. The file name of your css file will be *sprite-{sprite name}.css*.
 ```html
-<link rel="stylesheet" href="sprite/sprite.css">
-```  
-6. Declare an icon by **sprite-[group_name]-[image_name]** class template.
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sprite-test.css">
+</head> 
+<body>
+  
+</body>
+</html>
+```
+6. You can access each icons using css classes in the following pattern *sprite-{sprite name}-{icon name}*.
 ```html
-<span class="sprite-test-image1"></span>
-```  
-8. For more info, run *"php sprite --help"* in your terminal.  
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sprite-test.css">
+</head> 
+<body>
+ 
+    <div class="sprite-test sprite-test-icon1"></div>
+    <div class="sprite-test sprite-test-icon2"></div>
+    <div class="sprite-test sprite-test-icon3"></div>
+ 
+</body>
+</html> 
+```
+7. If needed to add new icons in to your icon set, just run the generate command and will regenerate new sprite image and css.
+```
+php atmos sprite:generate
+```
 
 ## Best Practices ##
 Always make it a practice to group all images that are same sizes and types.  
