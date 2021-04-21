@@ -321,7 +321,7 @@ class Sprite
      * @return  string
      */
 
-    public function getCompiledImagePath()
+    public function getGeneratedImagePath()
     {
         return $this->image_path;
     }
@@ -333,7 +333,7 @@ class Sprite
      * @return  $this
      */
 
-    public function setCompiledImagePath(string $path)
+    public function setGeneratedImagePath(string $path)
     {
         $this->image_path = str_replace('/', '\\', $path);
 
@@ -399,7 +399,7 @@ class Sprite
 
     public function setCommonPath(string $path)
     {
-        return $this->setCompiledImagePath($path)->setGeneratedCSSPath($path);
+        return $this->setGeneratedImagePath($path)->setGeneratedCSSPath($path);
     }
 
     /**
