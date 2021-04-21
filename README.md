@@ -44,12 +44,15 @@ protected function generate(array $arguments)
  * @param string $location - Folder where to get the icons.
  */
  
-$sprite = new SpriteBuilder("test", __DIR__ . "/../resources/icons");
+$sprite = new Sprite("test", __DIR__ . "/../resources/icons");
 
-// Save the generated files to public folder.
-$sprite->setCommonPath(__DIR__ . "/../public");
+// Set where to save the generated sprite image.
+$sprite->setGeneratedImagePath(__DIR__ . "/../public/img");
+$sprite->setImageBaseURL("img/");
 
-// Start generating sprite image and stylesheet.
+// Set where to save the generated css file.
+$sprite->setGeneratedCSSPath(__DIR__ . "/../public/css");
+
 $sprite->generate();
 ```
 4. Run the following command in your terminal to generate sprite.
@@ -62,7 +65,7 @@ php atmos sprite:generate
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="sprite-test.css">
+    <link rel="stylesheet" href="css/sprite-test.css">
 </head> 
 <body>
   
@@ -75,7 +78,7 @@ php atmos sprite:generate
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="sprite-test.css">
+    <link rel="stylesheet" href="css/sprite-test.css">
 </head> 
 <body>
  
