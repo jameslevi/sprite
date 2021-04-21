@@ -37,6 +37,10 @@ protected function generate(array $arguments)
 ```
 3. Try the following code inside the generate method.
 ```php
+// The current command class will conflict to Sprite
+// class so rename it to SpriteBuilder.
+use Sprite\Sprite as SpriteBuilder;
+
 /**
  * Create a new sprite object.
  * 
@@ -44,7 +48,7 @@ protected function generate(array $arguments)
  * @param string $location - Folder where to get the icons.
  */
  
-$sprite = new Sprite("test", __DIR__ . "/../resources/icons");
+$sprite = new SpriteBuilder("test", __DIR__ . "/../resources/icons");
 
 // Save the generated files to public folder.
 $sprite->setCommonPath(__DIR__ . "/../public");
