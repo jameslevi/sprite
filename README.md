@@ -37,10 +37,6 @@ protected function generate(array $arguments)
 ```
 3. Try the following code inside the generate method.
 ```php
-// The current command class will conflict to Sprite
-// class so rename it to SpriteBuilder.
-use Sprite\Sprite as SpriteBuilder;
-
 /**
  * Create a new sprite object.
  * 
