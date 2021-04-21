@@ -431,7 +431,8 @@ class Sprite
             return Console::error("Location is missing or invalid.");
         }
 
-        Console::log("Generating sprite has started...");
+        Console::log("Sprite " . static::$version);
+        Console::success("Sprite generation has started...");
         Console::lineBreak();
 
         Console::warn("Sprite Name      :\e[39m " . $this->name);
