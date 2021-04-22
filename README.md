@@ -84,9 +84,6 @@ php atmos sprite:generate
 </html> 
 ```
 7. If needed to add new icons in to your icon set, just run the generate command and will regenerate new sprite image and css.
-```
-php atmos sprite:generate
-```
 
 ## Best Practices ##
 Always make it a practice to group all images that are same sizes and types.  
