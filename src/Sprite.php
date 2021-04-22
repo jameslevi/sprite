@@ -185,17 +185,6 @@ class Sprite
     }
 
     /**
-     * Return true if GD library is enabled.
-     * 
-     * @return  bool
-     */
-
-    private function isGDEnabled()
-    {
-        return extension_loaded('gd');
-    }
-
-    /**
      * Return sprite name.
      * 
      * @return  string
@@ -441,7 +430,7 @@ class Sprite
 
     public function generate()
     {
-        if(!$this->isGDEnabled())
+        if(!extension_loaded('gd'))
         {
             return Console::error("GD library is currently not supported in your machine.");
         }
@@ -451,19 +440,19 @@ class Sprite
             return Console::error("Location is missing or invalid.");
         }
 
-        Console::log("Sprite " . static::$version);
-        Console::success("Sprite generation has started...");
-        Console::lineBreak();
-
-        Console::warn("Sprite Name      :\e[39m " . $this->name);
-        Console::warn("Location         :\e[39m " . $this->location);
-        Console::warn("Icons Found      :\e[39m " . sizeof($this->images));
-        Console::warn("Image Type       :\e[39m " . implode(", ", $this->extensions));
-        Console::warn("Image Path       :\e[39m " . $this->image_path . "\sprite-" . $this->name . ".png");
-        Console::warn("CSS Path         :\e[39m " . $this->css_path . "\sprite-" . $this->name . ".css");
-        
         if(!empty($this->images))
         {
+            Console::log("Sprite " . static::$version);
+            Console::success("Sprite generation has started...");
+            Console::lineBreak();
+
+            Console::warn("Sprite Name      :\e[39m " . $this->name);
+            Console::warn("Location         :\e[39m " . $this->location);
+            Console::warn("Icons Found      :\e[39m " . sizeof($this->images));
+            Console::warn("Image Type       :\e[39m " . implode(", ", $this->extensions));
+            Console::warn("Image Path       :\e[39m " . $this->image_path . "\sprite-" . $this->name . ".png");
+            Console::warn("CSS Path         :\e[39m " . $this->css_path . "\sprite-" . $this->name . ".css");
+
             $tiles              = array();
             $width              = 0;
             $height             = 0;
