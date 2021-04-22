@@ -582,6 +582,10 @@ class Sprite
             Console::success("Sprite stylesheet has been generated.");
             Console::success("Sprite has been successfully generated.");
         }
+        else
+        {
+            Console::error("No image assets to compile.");
+        }
     }
 
     /**
