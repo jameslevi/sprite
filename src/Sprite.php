@@ -567,7 +567,7 @@ class Sprite
                 $background = "sprite-" . $this->name . '.png';
             }
 
-            $css[] = ".sprite-" . $this->name . "{background-image:url('$background') !important;background-color:transparent}";
+            $css[] = ".sprite-" . $this->name . "{background-image:url('$background') !important;background-color:transparent;background-repeat:no-repeat}";
 
             foreach($tiles as $tile)
             {
@@ -578,7 +578,6 @@ class Sprite
 
                 $copies[]   = $resource;
                 $styles     = ".sprite-" . $this->name . "-" . $image->getName() . "{";
-                $styles    .= "background-repeat:no-repeat;";
                 $styles    .= "background-position:" . ($tile->getX() * -1) . "px " . ($tile->getY() * -1) . "px !important;";
                 $styles    .= "width:" . $tile->getWidth() . "px;";
                 $styles    .= "height:" . $tile->getHeight() . "px";
