@@ -126,6 +126,11 @@ class Sprite
 
     public function __construct(string $name, string $location)
     {
+        if(in_array(substr($location, strlen($location) - 1, strlen($location)), ['/', '\\']))
+        {
+            $location = substr($location, 0, strlen($location) - 1);
+        }
+
         $this->name         = strtolower($name);
         $this->location     = str_replace('/', '\\', $location);
         
@@ -335,6 +340,11 @@ class Sprite
 
     public function setGeneratedImagePath(string $path)
     {
+        if(in_array(substr($path, strlen($path) - 1, strlen($path)), ['/', '\\']))
+        {
+            $path = substr($path, 0, strlen($path) - 1);
+        }
+
         $this->image_path = str_replace('/', '\\', $path);
 
         return $this;
@@ -360,6 +370,11 @@ class Sprite
 
     public function setGeneratedCSSPath(string $path)
     {
+        if(in_array(substr($path, strlen($path) - 1, strlen($path)), ['/', '\\']))
+        {
+            $path = substr($path, 0, strlen($path) - 1);
+        }
+
         $this->css_path = str_replace('/', '\\', $path);
 
         return $this;
@@ -374,6 +389,11 @@ class Sprite
 
     public function setImageBaseURL(string $url)
     {
+        if(in_array(substr($url, strlen($url) - 1, strlen($url)), ['/', '\\']))
+        {
+            $url = substr($url, 0, strlen($url) - 1);
+        }
+
         $this->base_url = $url;
 
         return $this;
