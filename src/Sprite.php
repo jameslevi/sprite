@@ -540,7 +540,7 @@ class Sprite
 
             if(!is_null($this->base_url))
             {
-                $background = $this->base_url . "\sprite-" . $this->name . '.png';
+                $background = $this->base_url . "/sprite-" . $this->name . '.png';
             }
             else
             {
