@@ -1,13 +1,13 @@
 # Sprite
 
-![](https://img.shields.io/badge/packagist-v1.0.8-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/badge/packagist-v1.0.9-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a) ![](https://img.shields.io/badge/license-MIT-informational?style=flat&logo=<LOGO_NAME>&logoColor=white&color=2bbc8a)
  
 Is a simple image to sprite compiler tool for web development.
 
 ## Features ##
 1. Supports png, gif, jpg, bmp and webp icons.
 2. Automatically generate css class for each icon.
-3. Easy integration in any web projects.
+3. Easy integration with any web projects.
 
 ## Installation ##
 1. You can install via composer.
