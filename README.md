@@ -42,7 +42,7 @@ $sprite = new Sprite("test", __DIR__ . "/../resources/icons");
 
 // Set where to save the generated sprite image.
 $sprite->setGeneratedImagePath(__DIR__ . "/../public/img");
-$sprite->setImageBaseURL("/../../img");
+$sprite->setImageBaseURL("/../img");
 
 // Set where to save the generated css file.
 $sprite->setGeneratedCSSPath(__DIR__ . "/../public/css");
@@ -83,7 +83,7 @@ php atmos sprite:generate
 </body>
 </html> 
 ```
-7. If needed to add new icons in to your icon set, just run the generate command and will regenerate new sprite image and css.
+7. If needed to add new icons in to your icon set, just run the generate command and it will generate new sprite image and css.
 
 ## Best Practices ##
 Always make it a practice to group all images that are same sizes and types.  
