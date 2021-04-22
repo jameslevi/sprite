@@ -42,7 +42,7 @@ $sprite = new Sprite("test", __DIR__ . "/../resources/icons");
 
 // Set where to save the generated sprite image.
 $sprite->setGeneratedImagePath(__DIR__ . "/../public/img");
-$sprite->setImageBaseURL("img/");
+$sprite->setImageBaseURL("/../../img");
 
 // Set where to save the generated css file.
 $sprite->setGeneratedCSSPath(__DIR__ . "/../public/css");
