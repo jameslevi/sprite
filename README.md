@@ -37,13 +37,7 @@ protected function generate(array $arguments)
 ```
 3. Try the following code inside the generate method.
 ```php
-/**
- * Create a new sprite object.
- * 
- * @param string $name - Sprite name.
- * @param string $location - Folder where to get the icons.
- */
- 
+// Create new instance by setting sprite name and asset location.
 $sprite = new Sprite("test", __DIR__ . "/../resources/icons");
 
 // Set where to save the generated sprite image.
