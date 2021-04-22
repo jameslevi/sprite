@@ -7,6 +7,7 @@ Is a simple image to sprite compiler tool for web development.
 ## Features ##
 1. Supports png, gif, jpg, bmp and webp icons.
 2. Automatically generate css class for each icon.
+3. Easy integration in any web projects.
 
 ## Installation ##
 1. You can install via composer.
@@ -53,7 +54,7 @@ $sprite->generate();
 ```
 php atmos sprite:generate
 ```
-5. An image and css file will be generated in your public folder. Add the css in the head section of your webpage to access all sprites. The file name of your css file will be *sprite-{sprite name}.css*.
+5. Add the generated css file in the head section of your project.
 ```html
 <!DOCTYPE html>
 <html>
@@ -66,7 +67,7 @@ php atmos sprite:generate
 </body>
 </html>
 ```
-6. You can access each icons using css classes in the following pattern *sprite-{sprite name}-{icon name}*.
+6. You can access each icon using css classes in this pattern *sprite-{sprite name}-{icon name}*.
 ```html
 <!DOCTYPE html>
 <html>
@@ -83,10 +84,12 @@ php atmos sprite:generate
 </body>
 </html> 
 ```
-7. If needed to add new icons in to your icon set, just run the generate command and it will generate new sprite image and css.
+7. If there is a need to add new icons into your icon set, just run the generate command and it will generate new sprite image and stylesheet again.
 
 ## Best Practices ##
-Always make it a practice to group all images that are same sizes and types.  
+1. In each sprite set, always make sure all icons are of the same type and dimensions.
+2. Do not add spaces in naming icons, instead use hypen to separate words.
+3. Do not place your assets folder in public directory.
 
 ## Contribution ##
 For bug reports and suggestions, you can email James Levi Crisostomo via nerdlabenterprise@gmail.com.  
